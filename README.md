@@ -12,7 +12,7 @@
 ## Project Description
 FlexiDrive is a professional, implementable Car Rental Management System designed to provide a modern, scalable, and efficient solution for vehicle rental operations. It is built to handle real-world requirements, including multiple user types, dynamic pricing models, vehicle tracking, insurance management, and operational crew coordination.
 
-The system supports multiple **vehicle categories**—Daily Drives, Special Occasion Vehicles, and Supercar Thrill Rides—each with distinct pricing strategies and operational rules. FlexiDrive tracks vehicles in real time, including **current km, condition, maintenance needs, and booking schedules**, ensuring reliability and accuracy for both customers and administrators.
+The system supports multiple **vehicle categories** -> Daily Drives, Special Occasion Vehicles, and Supercar Thrill Rides, each with distinct pricing strategies and operational rules. FlexiDrive tracks vehicles in real time, including **current km, condition, maintenance needs, and booking schedules**, ensuring reliability and accuracy for both customers and administrators.
 
 FlexiDrive includes **VIP customer management**, enabling rewards and priority booking for frequent renters. The system also distinguishes **crew roles**, including administrators, booking staff, maintenance personnel, fleet handlers, and cleaning crew, each with permissions aligned to realistic operational responsibilities.
 
