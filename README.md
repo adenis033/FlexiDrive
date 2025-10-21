@@ -1,5 +1,4 @@
-# FlexiDrive
-**The Dynamic Car Rental System**
+# FlexiDrive - **The Dynamic Car Rental System**
 
 ---
 
@@ -85,7 +84,8 @@ The platform is designed for **extensibility, maintainability, and modularity**,
 
 ---
 
-### 8. Design Patterns & Justifications
+## Design Patterns & Justifications
+
 
 1.  **Factory Method Pattern**
     - **Problem:** Vehicles differ by type and attributes; creation must be decoupled from client modules.
@@ -117,9 +117,7 @@ The platform is designed for **extensibility, maintainability, and modularity**,
     - **Justification:** This directly addresses the requirement for "crew with different tasks that will have access to do different stuff." It simplifies the interface for each user role, enforcing the **Principle of Least Privilege**.
     - **Advantage:** Improves security by restricting access. Drastically simplifies the workflow for non-admin users. Decouples the user-facing part of the application from the complex internal subsystems, making the system easier to maintain.
 
----
-
-### 9. Expected Benefits
+### Expected Benefits
 - **Realism:** Roles, km/fuel tracking, cleaning schedules, and maintenance reflect real-world operations.
 - **Extensibility:** Easily add new vehicle types, pricing strategies, or crew roles.
 - **Maintainability:** Modular design patterns reduce duplication and enable independent testing.
@@ -129,7 +127,7 @@ The platform is designed for **extensibility, maintainability, and modularity**,
 
 ---
 
-### 10. Conclusion
+## Conclusion
 FlexiDrive is a fully implementable, professional car rental system that realistically models customer workflows, VIP programs, multiple crew roles, vehicle tracking, maintenance, and billing. By leveraging **Factory, Strategy, Decorator, Observer, and Facade patterns**, the system achieves modularity, maintainability, and extensibility.
 
 The design balances realism and software engineering best practices, making it suitable for professional-level implementation while supporting future feature expansions.
