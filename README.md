@@ -1,10 +1,11 @@
-# FlexiDrive - **The Dynamic Car Rental System**
+# FlexiDrive - **The Dynamic Car Rental System** | Milestone 1
 
 ---
 
 ## Team Members
 - Râpa Denis - Andrei
 - Bațagoi Ana - Maria
+- Mazilu Stefan 
 
 ---
 
