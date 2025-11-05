@@ -1,4 +1,4 @@
-# FlexiDrive - **The Dynamic Car Rental System**
+# FlexiDrive - **The Dynamic Car Rental System** | Milestone 2
 
 ---
 
