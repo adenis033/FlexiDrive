@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # 1. User Service
+  user-service:
+    build: ./userservice
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    networks:
+      - flexidrive-network
+
+  # 2. Fleet Service
+  fleet-service:
+    build: ./fleetservice
+    container_name: fleet-service
+    ports:
+      - "8082:8082"
+    networks:
+      - flexidrive-network
+
+  # 3. Booking Service
+  booking-service:
+    build: ./bookingservice
+    container_name: booking-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - user-service
+      - fleet-service
+    environment:
+      # HERE IS THE MAGIC: We override the URLs to point to the docker container names
+      - USER_SERVICE_URL=http://user-service:8081/api/users/
+      - FLEET_SERVICE_URL=http://fleet-service:8082/api/vehicles/
+    networks:
+      - flexidrive-network
+
+networks:
+  flexidrive-network:
+    driver: bridge
