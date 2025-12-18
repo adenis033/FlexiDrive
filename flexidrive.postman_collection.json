@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "flexidrive-grade10-final",
+		"name": "FlexiDrive Final Submission",
+		"description": "Complete test suite for FlexiDrive Microservices. Includes CRUD, Inter-service communication checks, and Booking Cancellation logic.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. User Service",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"alex_grade10\",\n    \"password\": \"securepass\",\n    \"email\": \"alex@student.com\"\n}"
+						},
+						"url": "http://localhost:8081/api/users"
+					}
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8081/api/users"
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8081/api/users/1"
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Fleet Service",
+			"item": [
+				{
+					"name": "Add Vehicle (Tesla)",
+					"request": {
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"make\": \"Tesla\",\n    \"model\": \"Model 3\",\n    \"licensePlate\": \"RO-123-FLEX\",\n    \"dailyRate\": 100.0\n}"
+						},
+						"url": "http://localhost:8082/api/vehicles"
+					}
+				},
+				{
+					"name": "Get All Vehicles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8082/api/vehicles"
+					}
+				},
+				{
+					"name": "Check Vehicle Status (Verify Availability)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8082/api/vehicles/1"
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Booking Service (The Logic Test)",
+			"item": [
+				{
+					"name": "Create Booking (Locks Car)",
+					"request": {
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"vehicleId\": 1,\n    \"startDate\": \"2025-06-01\",\n    \"endDate\": \"2025-06-05\"\n}"
+						},
+						"url": "http://localhost:8083/api/bookings"
+					}
+				},
+				{
+					"name": "Get All Bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8083/api/bookings"
+					}
+				},
+				{
+					"name": "CANCEL Booking (Frees Car)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8083/api/bookings/1/cancel"
+					}
+				}
+			]
+		}
+	]
+}

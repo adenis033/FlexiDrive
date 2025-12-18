@@ -1,0 +1,142 @@
+name: FlexiDrive CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # Job 1: Build and Test All Services
+  build-and-test:
+    name: Build & Test Services
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build User Service
+        run: |
+          cd userservice
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
+        
+      - name: Test User Service
+        run: |
+          cd userservice
+          ./mvnw test
+
+      - name: Build Fleet Service
+        run: |
+          cd fleetservice
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
+
+      - name: Test Fleet Service
+        run: |
+          cd fleetservice
+          ./mvnw test
+
+      - name: Build Booking Service
+        run: |
+          cd bookingservice
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
+
+      - name: Test Booking Service
+        run: |
+          cd bookingservice
+          ./mvnw test
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: jar-files
+          path: |
+            userservice/target/*.jar
+            fleetservice/target/*.jar
+            bookingservice/target/*.jar
+
+  # Job 2: Build Docker Images
+  build-docker:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build User Service Docker Image
+        run: |
+          cd userservice
+          docker build -t flexidrive-user-service:latest .
+
+      - name: Build Fleet Service Docker Image
+        run: |
+          cd fleetservice
+          docker build -t flexidrive-fleet-service:latest .
+
+      - name: Build Booking Service Docker Image
+        run: |
+          cd bookingservice
+          docker build -t flexidrive-booking-service:latest .
+
+      - name: List Docker Images
+        run: docker images | grep flexidrive
+
+  # Job 3: Deploy to Local Docker Environment
+  deploy:
+    name: Deploy to Docker Compose
+    runs-on: ubuntu-latest
+    needs: build-docker
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy with Docker Compose
+        run: |
+          docker-compose up -d --build
+          echo "Waiting for services to be healthy..."
+          sleep 30
+
+      - name: Verify Services are Running
+        run: |
+          docker-compose ps
+          echo "Checking service health..."
+          curl -f http://localhost:8081/api/users || echo "User service not ready"
+          curl -f http://localhost:8082/api/vehicles || echo "Fleet service not ready"
+          curl -f http://localhost:8083/api/bookings || echo "Booking service not ready"
+
+      - name: Check RabbitMQ Management UI
+        run: |
+          echo "RabbitMQ Management available at http://localhost:15672"
+          curl -u guest:guest http://localhost:15672/api/overview || echo "RabbitMQ not ready"
+
+      - name: Show Container Logs
+        if: always()
+        run: |
+          echo "=== User Service Logs ==="
+          docker-compose logs user-service
+          echo "=== Fleet Service Logs ==="
+          docker-compose logs fleet-service
+          echo "=== Booking Service Logs ==="
+          docker-compose logs booking-service
+          echo "=== RabbitMQ Logs ==="
+          docker-compose logs rabbitmq
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose down -v
