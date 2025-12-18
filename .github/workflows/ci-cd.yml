@@ -108,13 +108,13 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
-          docker-compose up -d --build
+          docker compose up -d --build
           echo "Waiting for services to be healthy..."
           sleep 30
 
       - name: Verify Services are Running
         run: |
-          docker-compose ps
+          docker compose ps
           echo "Checking service health..."
           curl -f http://localhost:8081/api/users || echo "User service not ready"
           curl -f http://localhost:8082/api/vehicles || echo "Fleet service not ready"
@@ -129,14 +129,14 @@ jobs:
         if: always()
         run: |
           echo "=== User Service Logs ==="
-          docker-compose logs user-service
+          docker compose logs user-service
           echo "=== Fleet Service Logs ==="
-          docker-compose logs fleet-service
+          docker compose logs fleet-service
           echo "=== Booking Service Logs ==="
-          docker-compose logs booking-service
+          docker compose logs booking-service
           echo "=== RabbitMQ Logs ==="
-          docker-compose logs rabbitmq
+          docker compose logs rabbitmq
 
       - name: Cleanup
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v
